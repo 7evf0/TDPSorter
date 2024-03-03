@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
 
-book_max = 250
+book_max = 1000
 student_min = 150
 
-city_numbers = [58, 60, 37, 1, 33, 70, 42, 32, 3, 26, 11, 14, 78, 18, 19, 66, 40, 71, 50, 68, 51]
+city_numbers = range(1,82)
 # Suppress warnings
 warnings.simplefilter('ignore', InsecureRequestWarning)
 
@@ -16,8 +16,8 @@ print("Started!")
 for number in city_numbers:
     # Request Data
     url = "https://www.meb.gov.tr/baglantilar/okullar/index.php?ILKODU=" + str(number)
-    page = requests.get(url)
-    soup = BeautifulSoup(page.text, "html")
+    page = requests.get(url, verify=False)
+    soup = BeautifulSoup(page.text, features="html.parser")
 
     # Extract School Data
     school_html = soup.find_all("tr")
@@ -86,3 +86,5 @@ for number in city_numbers:
         curr_book_student_pair_list.append((book_number_mid,student_number_mid))
 
         book_student_records.append(curr_book_student_pair_list)
+
+print("Ended Succesfully!")
